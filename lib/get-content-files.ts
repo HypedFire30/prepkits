@@ -58,49 +58,22 @@ export async function getAvailableRoleplays(
  */
 export async function getAvailableTests(clusterId: string): Promise<number[]> {
   try {
-    // Try multiple path resolutions for different environments
-    const basePaths = [
-      process.cwd(), // Standard Next.js/Vercel
-      join(process.cwd(), ".next", "server"), // Build output
-    ]
+    // In Vercel serverless, process.cwd() is /var/task
+    // The public folder should be accessible, but let's try multiple approaches
+    const testDir = join(process.cwd(), "public", "clusters", clusterId, "tests")
 
-    let testDir: string | null = null
-    for (const basePath of basePaths) {
-      const candidatePath = join(basePath, "public", "clusters", clusterId, "tests")
-      if (existsSync(candidatePath)) {
-        testDir = candidatePath
-        break
-      }
+    // Try to read the directory - in Vercel, existsSync might fail but readdir might work
+    let files: string[] = []
+    try {
+      files = await readdir(testDir)
+    } catch (readError) {
+      // If readdir fails, the directory doesn't exist or isn't accessible
+      console.error(`Cannot read test directory for ${clusterId}:`, testDir)
+      console.error(`Error:`, readError instanceof Error ? readError.message : readError)
+      console.error(`CWD: ${process.cwd()}`)
+      return []
     }
 
-    // If not found, try the standard path anyway (might work at runtime)
-    if (!testDir) {
-      testDir = join(process.cwd(), "public", "clusters", clusterId, "tests")
-    }
-
-    // Check if directory exists
-    if (!existsSync(testDir)) {
-      // In Vercel, files might be in a different location
-      // Try to read anyway - sometimes existsSync fails but readdir works
-      try {
-        const files = await readdir(testDir)
-        const testNumbers = files
-          .filter((file) => file.startsWith("test-") && file.endsWith(".pdf"))
-          .map((file) => {
-            const match = file.match(/test-(\d+)\.pdf/)
-            return match ? parseInt(match[1], 10) : null
-          })
-          .filter((num): num is number => num !== null)
-          .sort((a, b) => a - b)
-        return testNumbers
-      } catch {
-        // If readdir also fails, return empty
-        console.error(`Cannot access test directory: ${testDir}`)
-        return []
-      }
-    }
-
-    const files = await readdir(testDir)
     const testNumbers = files
       .filter((file) => file.startsWith("test-") && file.endsWith(".pdf"))
       .map((file) => {
@@ -110,12 +83,14 @@ export async function getAvailableTests(clusterId: string): Promise<number[]> {
       .filter((num): num is number => num !== null)
       .sort((a, b) => a - b)
 
+    console.log(`Found ${testNumbers.length} tests for ${clusterId}`)
     return testNumbers
   } catch (error) {
     // Directory doesn't exist or no files
     console.error(`Error reading tests for ${clusterId}:`, error)
     if (error instanceof Error) {
       console.error(`Error message: ${error.message}`)
+      console.error(`CWD: ${process.cwd()}`)
     }
     return []
   }
