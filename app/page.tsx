@@ -75,6 +75,7 @@ export default function HomePage() {
             <div className="mb-2 sm:mb-4">
               <div className="flex flex-col items-center mb-4 sm:mb-6">
                 <div className="relative w-72 sm:w-80 md:w-96 h-auto mb-3 sm:mb-4">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/oregon-deca-logo.png"
                     alt="Oregon DECA Logo"
@@ -220,7 +221,7 @@ export default function HomePage() {
                   Excel in Competition
                 </h3>
                 <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors duration-300">
-                  Master your cluster's content, practice your roleplays, and
+                  Master your cluster&apos;s content, practice your roleplays, and
                   walk into your DECA competition with confidence and
                   preparation.
                 </p>
