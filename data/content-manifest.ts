@@ -4,6 +4,7 @@
 export interface ContentManifest {
   tests: Record<string, number[]>
   roleplays: Record<string, Record<string, number[]>>
+  roleplayDirs: Record<string, Record<string, string>>
 }
 
 export const contentManifest: ContentManifest = {
@@ -279,6 +280,40 @@ export const contentManifest: ContentManifest = {
         6,
         7
       ]
+    }
+  },
+  "roleplayDirs": {
+    "business-administration": {
+      "BLTDM": "BLTDM",
+      "HRM": "HRM"
+    },
+    "entrepreneurship": {
+      "ENT": "ENT",
+      "ETDM": "ETDM"
+    },
+    "finance": {
+      "ACT": "ACT",
+      "BFS": "BFS",
+      "FTDM": "FTDM"
+    },
+    "hospitality-tourism": {
+      "HLM": "HLM",
+      "HTDM": "HTDM",
+      "QSRM": "QSRM",
+      "RFSM": "RFSM",
+      "TTDM": "TTDM"
+    },
+    "marketing": {
+      "AAM": "AAM",
+      "ASM": "ASM",
+      "BSM": "BSM",
+      "BTDM": "BTDM",
+      "FMS": "FMS",
+      "MCS": "MCS",
+      "MTDM": "MTDM",
+      "RMS": "RMS ",
+      "SEM": "SEM",
+      "STDM": "STDM"
     }
   }
 }

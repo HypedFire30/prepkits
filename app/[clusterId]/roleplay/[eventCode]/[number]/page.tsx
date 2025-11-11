@@ -7,7 +7,7 @@ import { BugReportButton } from "@/components/bug-report-button"
 import { clusters } from "@/data/clusters"
 import { decaEvents } from "@/data/deca-events"
 import { Suspense } from "react"
-import { getRoleplayDirName } from "@/lib/get-roleplay-dir"
+import { contentManifest } from "@/data/content-manifest"
 
 interface RoleplayPageProps {
   params: {
@@ -30,14 +30,24 @@ export default async function RoleplayPage({ params }: RoleplayPageProps) {
     notFound()
   }
 
-  // Get the actual directory name (handles trailing spaces, case differences)
-  const actualDirName = await getRoleplayDirName(cluster.id, params.eventCode)
+  // Get the actual directory name from manifest (generated at build time)
+  const eventCodeUpper = params.eventCode.trim().toUpperCase()
+  const clusterRoleplayDirs = contentManifest.roleplayDirs[cluster.id] || {}
+  const actualDirName = clusterRoleplayDirs[eventCodeUpper]
   
   if (!actualDirName) {
     notFound()
   }
 
-  const roleplayNumber = params.number
+  // Verify the roleplay exists in manifest
+  const clusterRoleplays = contentManifest.roleplays[cluster.id] || {}
+  const availableRoleplays = clusterRoleplays[eventCodeUpper] || []
+  const roleplayNumber = parseInt(params.number, 10)
+  
+  if (!availableRoleplays.includes(roleplayNumber)) {
+    notFound()
+  }
+
   const pdfPath = `/clusters/${cluster.id}/roleplays/${actualDirName}/roleplay-${roleplayNumber}.pdf`
 
   return (
