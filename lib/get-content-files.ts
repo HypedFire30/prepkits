@@ -58,16 +58,14 @@ export async function getAvailableRoleplays(
  */
 export async function getAvailableTests(clusterId: string): Promise<number[]> {
   try {
-    const testDir = join(
-      process.cwd(),
-      "public",
-      "clusters",
-      clusterId,
-      "tests"
-    )
+    // In Next.js/Vercel, public folder is at the project root
+    // process.cwd() should work, but let's also try relative to the file
+    const testDir = join(process.cwd(), "public", "clusters", clusterId, "tests")
 
     // Check if directory exists first
     if (!existsSync(testDir)) {
+      console.error(`Test directory does not exist: ${testDir}`)
+      console.error(`Current working directory: ${process.cwd()}`)
       return []
     }
 
@@ -81,10 +79,15 @@ export async function getAvailableTests(clusterId: string): Promise<number[]> {
       .filter((num): num is number => num !== null)
       .sort((a, b) => a - b)
 
+    console.log(`Found ${testNumbers.length} tests for ${clusterId} in ${testDir}`)
     return testNumbers
   } catch (error) {
     // Directory doesn't exist or no files
     console.error(`Error reading tests for ${clusterId}:`, error)
+    if (error instanceof Error) {
+      console.error(`Error message: ${error.message}`)
+      console.error(`Error stack: ${error.stack}`)
+    }
     return []
   }
 }
