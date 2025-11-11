@@ -22,10 +22,7 @@ import { decaEvents } from "@/data/deca-events";
 import { EventSelectionProvider } from "@/components/event-selection-context";
 import { EventSelector } from "@/components/event-selector";
 import { RoleplaySelector } from "@/components/roleplay-selector";
-import {
-  getAvailableTests,
-  getAvailableRoleplays,
-} from "@/lib/get-content-files";
+import { contentManifest } from "@/data/content-manifest";
 
 interface ClusterPageProps {
   params: {
@@ -84,27 +81,26 @@ export default async function ClusterPage({ params, searchParams }: ClusterPageP
   const events = decaEvents[cluster.id] || [];
   const initialEventCode = searchParams.event;
 
-  // Dynamically get available tests and roleplays in parallel
-  const [availableTestNumbers, ...roleplayResults] = await Promise.all([
-    getAvailableTests(cluster.id),
-    ...events.map((event) =>
-      getAvailableRoleplays(cluster.id, event.eventCode).then((numbers) => ({
-        eventCode: event.eventCode,
-        numbers,
-      }))
-    ),
-  ]);
-
+  // Get available tests and roleplays from manifest (generated at build time)
+  const availableTestNumbers = contentManifest.tests[cluster.id] || []
   const tests = availableTestNumbers.map((num) => ({
     name: `Test ${num}`,
     path: `/${cluster.id}/test/${num}`,
   }));
 
-  // Build roleplay data object
+  // Build roleplay data object from manifest
   const roleplayData: Record<string, number[]> = {};
-  roleplayResults.forEach((result) => {
-    roleplayData[result.eventCode] = result.numbers;
-  });
+  const clusterRoleplays = contentManifest.roleplays[cluster.id] || {}
+  events.forEach((event) => {
+    // Find matching event code (case-insensitive, ignoring trailing spaces)
+    const eventCodeUpper = event.eventCode.trim().toUpperCase()
+    const matchingKey = Object.keys(clusterRoleplays).find(
+      (key) => key.trim().toUpperCase() === eventCodeUpper
+    )
+    if (matchingKey) {
+      roleplayData[event.eventCode] = clusterRoleplays[matchingKey]
+    }
+  })
 
   return (
     <EventSelectionProvider events={events} initialEventCode={initialEventCode}>

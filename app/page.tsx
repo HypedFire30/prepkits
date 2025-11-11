@@ -221,8 +221,8 @@ export default function HomePage() {
                   Excel in Competition
                 </h3>
                 <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors duration-300">
-                  Master your cluster&apos;s content, practice your roleplays, and
-                  walk into your DECA competition with confidence and
+                  Master your cluster&apos;s content, practice your roleplays,
+                  and walk into your DECA competition with confidence and
                   preparation.
                 </p>
               </div>
