@@ -58,15 +58,46 @@ export async function getAvailableRoleplays(
  */
 export async function getAvailableTests(clusterId: string): Promise<number[]> {
   try {
-    // In Next.js/Vercel, public folder is at the project root
-    // process.cwd() should work, but let's also try relative to the file
-    const testDir = join(process.cwd(), "public", "clusters", clusterId, "tests")
+    // Try multiple path resolutions for different environments
+    const basePaths = [
+      process.cwd(), // Standard Next.js/Vercel
+      join(process.cwd(), ".next", "server"), // Build output
+    ]
 
-    // Check if directory exists first
+    let testDir: string | null = null
+    for (const basePath of basePaths) {
+      const candidatePath = join(basePath, "public", "clusters", clusterId, "tests")
+      if (existsSync(candidatePath)) {
+        testDir = candidatePath
+        break
+      }
+    }
+
+    // If not found, try the standard path anyway (might work at runtime)
+    if (!testDir) {
+      testDir = join(process.cwd(), "public", "clusters", clusterId, "tests")
+    }
+
+    // Check if directory exists
     if (!existsSync(testDir)) {
-      console.error(`Test directory does not exist: ${testDir}`)
-      console.error(`Current working directory: ${process.cwd()}`)
-      return []
+      // In Vercel, files might be in a different location
+      // Try to read anyway - sometimes existsSync fails but readdir works
+      try {
+        const files = await readdir(testDir)
+        const testNumbers = files
+          .filter((file) => file.startsWith("test-") && file.endsWith(".pdf"))
+          .map((file) => {
+            const match = file.match(/test-(\d+)\.pdf/)
+            return match ? parseInt(match[1], 10) : null
+          })
+          .filter((num): num is number => num !== null)
+          .sort((a, b) => a - b)
+        return testNumbers
+      } catch {
+        // If readdir also fails, return empty
+        console.error(`Cannot access test directory: ${testDir}`)
+        return []
+      }
     }
 
     const files = await readdir(testDir)
@@ -79,14 +110,12 @@ export async function getAvailableTests(clusterId: string): Promise<number[]> {
       .filter((num): num is number => num !== null)
       .sort((a, b) => a - b)
 
-    console.log(`Found ${testNumbers.length} tests for ${clusterId} in ${testDir}`)
     return testNumbers
   } catch (error) {
     // Directory doesn't exist or no files
     console.error(`Error reading tests for ${clusterId}:`, error)
     if (error instanceof Error) {
       console.error(`Error message: ${error.message}`)
-      console.error(`Error stack: ${error.stack}`)
     }
     return []
   }
