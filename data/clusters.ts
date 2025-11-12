@@ -15,15 +15,15 @@ export const clusters: Cluster[] = [
     name: "Business Administration",
     description: "Core business management and administrative skills",
     color: "from-yellow-400 to-yellow-600",
-    videoId: "YOUR_VIDEO_ID_HERE", // Replace with actual video ID
-    videoType: "youtube", // or "vimeo"
+    videoId: "Pw6-FzRl1wU",
+    videoType: "youtube",
   },
   {
     id: "entrepreneurship",
     name: "Entrepreneurship",
     description: "Starting and managing your own business",
     color: "from-purple-500 to-purple-700",
-    videoId: undefined, // Add video ID when available
+    videoId: "BXAAYZ1FCiY",
     videoType: "youtube",
   },
   {
@@ -31,7 +31,7 @@ export const clusters: Cluster[] = [
     name: "Finance",
     description: "Financial planning, analysis, and management",
     color: "from-green-500 to-green-700",
-    videoId: undefined,
+    videoId: "InWlyxJiJr0",
     videoType: "youtube",
   },
   {
@@ -39,7 +39,7 @@ export const clusters: Cluster[] = [
     name: "Hospitality & Tourism",
     description: "Service excellence in hospitality and tourism",
     color: "from-blue-700 to-blue-900",
-    videoId: undefined,
+    videoId: "L0nUWMs-eD8",
     videoType: "youtube",
   },
   {
@@ -47,7 +47,7 @@ export const clusters: Cluster[] = [
     name: "Marketing",
     description: "Marketing strategies and brand management",
     color: "from-red-500 to-red-700",
-    videoId: undefined,
+    videoId: "FWSbUOYfthQ",
     videoType: "youtube",
   },
 ]
