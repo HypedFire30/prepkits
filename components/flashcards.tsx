@@ -83,15 +83,23 @@ export function Flashcards({ flashcards }: FlashcardsProps) {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
       {/* Progress indicator */}
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>
-          Card {currentIndex + 1} of {flashcards.length}
-        </span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-medium text-foreground">
+            Card {currentIndex + 1} of {flashcards.length}
+          </span>
+          <div className="h-2 w-32 bg-muted rounded-full overflow-hidden">
+            <div
+              className="h-full bg-primary transition-all duration-300 ease-out"
+              style={{ width: `${((currentIndex + 1) / flashcards.length) * 100}%` }}
+            />
+          </div>
+        </div>
         <Button
           variant="ghost"
           size="sm"
           onClick={handleReset}
-          className="h-8"
+          className="h-9"
         >
           <RotateCcw className="h-4 w-4 mr-2" />
           Reset
@@ -100,57 +108,67 @@ export function Flashcards({ flashcards }: FlashcardsProps) {
 
       {/* Flashcard */}
       <div className="relative" style={{ perspective: "1000px" }}>
-        <Card
-          className="h-96 cursor-pointer transition-transform duration-600 ease-in-out"
+        <div
+          className="relative h-[500px] cursor-pointer"
           style={{
             transformStyle: "preserve-3d",
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
-            transition: "transform 0.6s ease-in-out",
+            transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
           onClick={handleFlip}
         >
-          <CardContent className="h-full flex items-center justify-center p-8">
-            <div
-              className="absolute inset-0 flex items-center justify-center p-8 backface-hidden"
-              style={{
-                backfaceVisibility: "hidden",
-                WebkitBackfaceVisibility: "hidden",
-              }}
-            >
-              <div className="text-center space-y-4">
-                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                  Term
-                </p>
-                <h2 className="text-3xl font-bold">{currentCard.term}</h2>
-                <p className="text-sm text-muted-foreground mt-4">
+          {/* Front side - Term */}
+          <Card
+            className="absolute inset-0 h-full shadow-lg hover:shadow-xl transition-shadow duration-300"
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              transform: "rotateY(0deg)",
+            }}
+          >
+            <CardContent className="h-full flex items-center justify-center p-8">
+              <div className="text-center space-y-6 w-full">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
+                  <p className="text-xs font-semibold text-primary uppercase tracking-wider">
+                    Term
+                  </p>
+                </div>
+                <h2 className="text-4xl font-bold leading-tight">{currentCard.term}</h2>
+                <p className="text-sm text-muted-foreground mt-6">
                   Click or press Space to flip
                 </p>
               </div>
-            </div>
-            <div
-              className="absolute inset-0 flex items-center justify-center p-8 backface-hidden"
-              style={{
-                backfaceVisibility: "hidden",
-                WebkitBackfaceVisibility: "hidden",
-                transform: "rotateY(180deg)",
-              }}
-            >
-              <div className="text-center space-y-4">
-                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                  Definition
-                </p>
-                <p className="text-xl leading-relaxed">{currentCard.definition}</p>
-                <p className="text-sm text-muted-foreground mt-4">
+            </CardContent>
+          </Card>
+          
+          {/* Back side - Definition */}
+          <Card
+            className="absolute inset-0 h-full shadow-lg hover:shadow-xl transition-shadow duration-300"
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+            }}
+          >
+            <CardContent className="h-full flex items-center justify-center p-8">
+              <div className="text-center space-y-6 w-full">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
+                  <p className="text-xs font-semibold text-primary uppercase tracking-wider">
+                    Definition
+                  </p>
+                </div>
+                <p className="text-2xl leading-relaxed font-medium max-w-2xl mx-auto">{currentCard.definition}</p>
+                <p className="text-sm text-muted-foreground mt-6">
                   Click or press Space to flip
                 </p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Navigation buttons */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <Button
           variant="outline"
           size="lg"
@@ -162,7 +180,7 @@ export function Flashcards({ flashcards }: FlashcardsProps) {
           Previous
         </Button>
 
-        <div className="flex gap-2">
+        <div className="flex gap-1.5 flex-1 justify-center max-w-md mx-4">
           {flashcards.map((_, index) => (
             <button
               key={index}
@@ -171,10 +189,10 @@ export function Flashcards({ flashcards }: FlashcardsProps) {
                 setIsFlipped(false)
                 setHasFlipped(false)
               }}
-              className={`h-2 w-2 rounded-full transition-colors ${
+              className={`h-2 rounded-full transition-all ${
                 index === currentIndex
-                  ? "bg-primary"
-                  : "bg-muted hover:bg-muted-foreground/50"
+                  ? "bg-primary flex-1"
+                  : "bg-muted hover:bg-muted-foreground/50 flex-1"
               }`}
               aria-label={`Go to card ${index + 1}`}
             />
@@ -194,8 +212,8 @@ export function Flashcards({ flashcards }: FlashcardsProps) {
       </div>
 
       {/* Keyboard shortcuts hint */}
-      <div className="text-center text-xs text-muted-foreground">
-        <p>
+      <div className="text-center">
+        <p className="text-xs text-muted-foreground">
           Use arrow keys to navigate • Space or Enter to flip
         </p>
       </div>

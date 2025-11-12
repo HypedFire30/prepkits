@@ -7,6 +7,7 @@ import {
   Video,
   BookOpen,
   ClipboardCheck,
+  GraduationCap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -184,6 +185,31 @@ export default async function ClusterPage({ params, searchParams }: ClusterPageP
                     </Button>
                   </CardContent>
                 </Card>
+
+                {/* Flashcards */}
+                {flashcards.length > 0 && (
+                  <Card className="border-2">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="p-2 bg-primary/10 rounded-lg">
+                          <GraduationCap className="h-5 w-5 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold">Flashcards</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {flashcards.length} cards available
+                          </p>
+                        </div>
+                      </div>
+                      <Button asChild className="w-full" size="lg">
+                        <Link href={`/${cluster.id}/flashcards`}>
+                          <BookOpen className="h-4 w-4 mr-2" />
+                          Study Flashcards
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
 
                 {/* Practice Roleplays */}
                 <RoleplaySelector

@@ -36,9 +36,9 @@ export default function FlashcardsPage({ params }: FlashcardsPageProps) {
               </Button>
             </Link>
             <div>
-              <h1 className="text-2xl font-bold">{cluster.name} - Flashcards</h1>
+              <h1 className="text-2xl font-bold">{cluster.name} Flashcards</h1>
               <p className="text-sm text-muted-foreground">
-                {flashcards.length} cards available
+                {flashcards.length} {flashcards.length === 1 ? 'card' : 'cards'} available
               </p>
             </div>
           </div>

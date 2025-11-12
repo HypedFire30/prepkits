@@ -20,10 +20,10 @@
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
+    --border: 220 13% 91%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   .dark {
@@ -55,6 +55,50 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* System font stack for modern, platform-agnostic feel */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-feature-settings: "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Typography Scale - Modern Hierarchy */
+  h1 {
+    @apply text-[32px] font-semibold leading-tight tracking-tight;
+  }
+  
+  h2 {
+    @apply text-[24px] font-semibold leading-tight tracking-tight;
+  }
+  
+  h3 {
+    @apply text-[18px] font-medium leading-snug;
+  }
+  
+  /* Body text defaults */
+  p {
+    @apply text-base leading-relaxed;
+  }
+  
+  /* Secondary text for labels/metadata */
+  .text-secondary-label {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  /* Caption/small print */
+  .text-caption {
+    @apply text-xs text-muted-foreground;
+  }
+  
+  /* Icon styling - consistent stroke weight for outline icons */
+  svg {
+    stroke-width: 1.5;
+  }
+  
+  /* Smooth transitions for interactive elements */
+  button, a, [role="button"] {
+    transition: all 0.2s ease-in-out;
   }
 }
 

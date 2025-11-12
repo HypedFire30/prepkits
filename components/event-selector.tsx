@@ -25,10 +25,10 @@ export function EventSelector({ clusterName }: EventSelectorProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Info className="h-5 w-5 text-primary" />
-          Competitive Events
+          Competitive Roleplay Events
         </CardTitle>
         <CardDescription>
-          Available competitive events in {clusterName}
+          Available roleplay events in {clusterName}
         </CardDescription>
       </CardHeader>
       <CardContent>
