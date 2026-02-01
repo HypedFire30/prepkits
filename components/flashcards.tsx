@@ -31,9 +31,6 @@ interface LearnSession {
   answerType: "term" | "definition"
 }
 
-const EMERGING_LEADER_EXAM_PDF_URL =
-  "https://oregondeca.org/wp-content/uploads/2025/12/Oregon-DECA-Emerging-Leader-Exam-Study-Guide-25-26.pdf"
-
 interface FlashcardsProps {
   flashcards: Flashcard[]
   showLearnMode?: boolean
@@ -69,7 +66,7 @@ function buildOptions(
 }
 
 export function Flashcards({ flashcards, showLearnMode = false, studyGuidePdfUrl }: FlashcardsProps) {
-  const pdfUrl = studyGuidePdfUrl ?? (showLearnMode ? EMERGING_LEADER_EXAM_PDF_URL : undefined)
+  const pdfUrl = studyGuidePdfUrl
   const [cardOrder, setCardOrder] = React.useState<number[]>(() =>
     flashcards.map((_, i) => i)
   )

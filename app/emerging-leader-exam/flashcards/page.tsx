@@ -45,6 +45,7 @@ export default function EmergingLeaderExamFlashcardsPage() {
             <Flashcards
               flashcards={emergingLeaderExamFlashcards}
               showLearnMode
+              studyGuidePdfUrl="https://oregondeca.org/wp-content/uploads/2025/12/Oregon-DECA-Emerging-Leader-Exam-Study-Guide-25-26.pdf"
             />
           </Suspense>
 

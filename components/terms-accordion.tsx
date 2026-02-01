@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils"
 
 interface TermsAccordionProps {
   flashcards: Flashcard[]
-  details: string[]
+  /** Optional extended content per term; when omitted, the card definition is shown in the expanded area */
+  details?: string[]
 }
 
 export function TermsAccordion({ flashcards, details }: TermsAccordionProps) {
@@ -16,7 +17,7 @@ export function TermsAccordion({ flashcards, details }: TermsAccordionProps) {
   return (
     <ul className="divide-y divide-border">
       {flashcards.map((card, index) => {
-        const detail = details[index]
+        const detail = details?.[index] ?? card.definition
         const isExpanded = expandedId === card.id
 
         return (

@@ -6,6 +6,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { clusters } from "@/data/clusters"
 import { flashcardSets } from "@/data/flashcards"
 import { Flashcards } from "@/components/flashcards"
+import { TermsAccordion } from "@/components/terms-accordion"
 import { Suspense } from "react"
 
 interface FlashcardsPageProps {
@@ -26,7 +27,7 @@ export default function FlashcardsPage({ params }: FlashcardsPageProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
+      <header className="border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 transition-colors duration-200 ease-out">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href={`/clusters/${cluster.id}`}>
@@ -45,12 +46,27 @@ export default function FlashcardsPage({ params }: FlashcardsPageProps) {
         </div>
       </header>
 
-      {/* Main content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+      {/* Main content: same format as Emerging Leader Exam — cards at top, terms accordion below */}
+      <main className="container mx-auto px-4 py-8 transition-opacity duration-300 ease-out">
+        <div className="max-w-4xl mx-auto space-y-10">
           <Suspense fallback={<div className="h-96 flex items-center justify-center">Loading flashcards...</div>}>
-            <Flashcards flashcards={flashcards} />
+            <Flashcards flashcards={flashcards} showLearnMode />
           </Suspense>
+
+          {/* Terms in this set — accordion (uses definition as expanded content when no details) */}
+          <section className="border rounded-xl bg-muted/30 overflow-hidden transition-shadow duration-200 ease-out hover:shadow-sm">
+            <div className="px-4 py-3 border-b bg-muted/50">
+              <h2 className="text-lg font-semibold">
+                Terms in this set ({flashcards.length})
+              </h2>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                Click a term to expand.
+              </p>
+            </div>
+            <div className="max-h-[420px] overflow-y-auto">
+              <TermsAccordion flashcards={flashcards} />
+            </div>
+          </section>
         </div>
       </main>
     </div>
