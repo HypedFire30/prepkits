@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { clusters } from "@/data/clusters"
 import { flashcardSets } from "@/data/flashcards"
+import { getClusterDecaDetails } from "@/data/cluster-deca-details"
 import { Flashcards } from "@/components/flashcards"
 import { TermsAccordion } from "@/components/terms-accordion"
 import { Suspense } from "react"
@@ -60,11 +61,14 @@ export default function FlashcardsPage({ params }: FlashcardsPageProps) {
                 Terms in this set ({flashcards.length})
               </h2>
               <p className="text-sm text-muted-foreground mt-0.5">
-                Click a term to expand.
+                Click a term to expand and read how it connects to DECA competitions and performance indicators.
               </p>
             </div>
             <div className="max-h-[420px] overflow-y-auto">
-              <TermsAccordion flashcards={flashcards} />
+              <TermsAccordion
+                flashcards={flashcards}
+                details={getClusterDecaDetails(cluster.id, flashcards)}
+              />
             </div>
           </section>
         </div>
