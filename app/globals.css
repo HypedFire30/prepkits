@@ -96,9 +96,36 @@
     stroke-width: 1.5;
   }
   
-  /* Smooth transitions for interactive elements */
-  button, a, [role="button"] {
-    transition: all 0.2s ease-in-out;
+  /* Smooth transitions for interactive elements and page feel */
+  button,
+  a,
+  [role="button"],
+  input,
+  select,
+  textarea {
+    transition: color 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out,
+      box-shadow 0.2s ease-out, transform 0.2s ease-out, opacity 0.2s ease-out;
+  }
+
+  /* Smoother hover/focus for links and buttons */
+  a:hover,
+  button:hover:not(:disabled),
+  [role="button"]:hover:not(:disabled) {
+    transition-duration: 0.25s;
+  }
+
+  /* Optional: gentle page transition feel for main content */
+  main {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 }
 

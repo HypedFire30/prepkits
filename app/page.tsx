@@ -92,14 +92,14 @@ export default function HomePage() {
               <p className="text-lg sm:text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed px-4">
                 Comprehensive preparation resources for DECA members.
               </p>
-              <a
-                href="https://oregondeca.org/wp-content/uploads/2025/12/Oregon-DECA-Emerging-Leader-Exam-Study-Guide-25-26.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-block rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 px-6 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98]"
-              >
-                Emerging Leader Exam Study Guide
-              </a>
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+                <Link
+                  href="/emerging-leader-exam/flashcards"
+                  className="inline-block rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 px-6 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98]"
+                >
+                  Emerging Leader Exam
+                </Link>
+              </div>
             </div>
           </div>
         </div>
